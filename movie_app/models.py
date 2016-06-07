@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class Movies(models.Model):
+class Movie(models.Model):
     movie_id = models.IntegerField()
     movie_title = models.CharField(max_length=75)
     release_date = models.CharField(max_length=15)
@@ -33,19 +33,20 @@ class Movies(models.Model):
         return self.movie_title
 
 
-class Reviewers(models.Model):
+class Rater(models.Model):
     user_id = models.IntegerField()
     age = models.IntegerField()
-    gender = models.CharField(max_length=10, null=True)
+    gender = models.CharField(max_length=3, null=True)
     occupation = models.CharField(max_length=15)
+    zip_code = models.CharField(max_length=10)
 
     def __str__(self):
         return self.occupation
 
 
-class Ratings(models.Model):
-    user_id = models.ForeignKey(Reviewers)
-    item_id = models.ForeignKey(Movies)
+class Rating(models.Model):
+    user_id = models.ForeignKey(Rater)
+    item_id = models.ForeignKey(Movie)
     rating = models.IntegerField()
     timestamp = models.IntegerField()
 
