@@ -18,21 +18,47 @@ def rater_data(apps, schema_editor):
             Rater.objects.create(user_id=int(row['user_id']), age=int(row['age']), gender=row['gender'],
                                  occupation=row['occupation'], zip_code=row['zip_code'])
 
-    # raise Exception('yay')
+    raise Exception('yay1')
+
 
 def movie_data(apps, schema_editor):
     Movie = apps.get_model("movie_app", "Movie")
-    with open("u.item", encoding="latin1", delimiter="\t") as outfile:
-        movie = outfile.read()
+    with open("u.item", encoding="latin1") as outfile:
+        movie = csv.DictReader(outfile, fieldnames=["movie_id", "movie_title", "release_date",
+                                                    "video_release_date", "imdb_url", "unknown",
+                                                    "action", "adventure", "animation", "children",
+                                                    "comedy", "crime", "documentary", "drama", "fantasy",
+                                                    "film_noir", "horror", "musical", "mystery", "romance",
+                                                    "scifi", "thriller", "war", "western"], delimiter="|")
 
         for row in movie:
-            pass
+            Movie.objects.create(movie_id=int(row["movie_id"]), movie_title=row["movie_title"],
+                                 release_date=row["release_date"], video_release_date=row["video_release_date"],
+                                 imdb_url=row["imdb_url"], unknown=int(row["unknown"]), action=int(row["action"]),
+                                 adventure=int(row["adventure"]), animation=int(row["animation"]),
+                                 children=int(row["children"]), comedy=int(row["comedy"]), crime=int(row["crime"]),
+                                 documentary=int(row["documentary"]), drama=int(row["drama"]),
+                                 fantasy=int(row["fantasy"]), film_noir=int(row["film_noir"]),
+                                 horror=int(row["horror"]), musical=int(row["musical"]),
+                                 mystery=int(row["mystery"]), romance=int(row["romance"]), scifi=int(row["scifi"]),
+                                 thriller=int(row["thriller"]), war=int(row["war"]), western=int(row["western"]))
+
+    raise Exception('yay2')
 
 
 def ratings_data(apps, schema_editor):
     Movie = apps.get_model("movie_app", "Movie")
     Rater = apps.get_model("movie_app", "Rater")
-    pass
+    Rating = apps.get_model("movie_app", "Rating")
+
+    with open("u.data") as outfile:
+        rating = csv.DictReader(outfile, fieldnames=["user_id", "item_id", "rating", "timestamp"], delimiter="\t")
+
+        for row in rating:
+            Rating.objects.create(user_id=int(row['user_id']), item_id=int(row['item_id']),
+                                  rating=int(row['rating']))
+
+    raise Exception('yay3')
 
 
 class Migration(migrations.Migration):
@@ -43,5 +69,7 @@ class Migration(migrations.Migration):
 
     operations = [
         # migrations.RunPython(rater_data)  # add with commas here
+        # migrations.RunPython(movie_data)
+        migrations.RunPython(ratings_data)
 
     ]
