@@ -8,17 +8,30 @@ import csv
 
 
 def rater_data(apps, schema_editor):
-    with open("u.user", encoding="latin1") as outfile:
-        rater =read(outfile, fieldnames=["user_id", "age", "gender", "occupation", "zip_code"])
+    Rater = apps.get_model("movie_app", "Rater")
+
+    with open("u.user") as outfile:
+        rater = csv.DictReader(outfile, fieldnames=["user_id", "age", "gender", "occupation", "zip_code"],
+                               delimiter="|")
 
         for row in rater:
+            Rater.objects.create(user_id=int(row['user_id']), age=int(row['age']), gender=row['gender'],
+                                 occupation=row['occupation'], zip_code=row['zip_code'])
+
+    # raise Exception('yay')
+
+def movie_data(apps, schema_editor):
+    Movie = apps.get_model("movie_app", "Movie")
+    with open("u.item", encoding="latin1", delimiter="\t") as outfile:
+        movie = outfile.read()
+
+        for row in movie:
             pass
 
 
-def movie_data(apps, schema_editor):
-    pass
-
 def ratings_data(apps, schema_editor):
+    Movie = apps.get_model("movie_app", "Movie")
+    Rater = apps.get_model("movie_app", "Rater")
     pass
 
 
@@ -29,4 +42,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        # migrations.RunPython(rater_data)  # add with commas here
+
     ]
