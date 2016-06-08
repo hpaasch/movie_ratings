@@ -1,0 +1,14 @@
+While the assignment is complete, I ended up running each table data migration
+separately. I need to better understand why. I had all three migration functions
+in one migration file, but only the first one migrated. So then I intentionally
+migrated the remaining two by sending them one at a time.
+
+I also noticed this afternoon that my colleagues are doing a lot less typing
+by using index instead of keys to access data. The keys are friendlier to read
+but less typing is also attractive. Is this just personal preference or is there
+a recommended practice?
+
+I was stumped for a long, long time on the correct approach for bringing the
+foreign keys into the ratings migration. And, yes, the answer was in my notes
+from this morning. Assign the foreign key value to a variable and then use the
+variable to create the new entry. 
