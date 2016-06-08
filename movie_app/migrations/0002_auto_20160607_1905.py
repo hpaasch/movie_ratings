@@ -18,7 +18,7 @@ def rater_data(apps, schema_editor):
             Rater.objects.create(user_id=int(row['user_id']), age=int(row['age']), gender=row['gender'],
                                  occupation=row['occupation'], zip_code=row['zip_code'])
 
-    raise Exception('yay1')
+    # raise Exception('yay1')
 
 
 def movie_data(apps, schema_editor):
@@ -43,7 +43,7 @@ def movie_data(apps, schema_editor):
                                  mystery=int(row["mystery"]), romance=int(row["romance"]), scifi=int(row["scifi"]),
                                  thriller=int(row["thriller"]), war=int(row["war"]), western=int(row["western"]))
 
-    raise Exception('yay2')
+    # raise Exception('yay2')
 
 
 def ratings_data(apps, schema_editor):
@@ -55,10 +55,12 @@ def ratings_data(apps, schema_editor):
         rating = csv.DictReader(outfile, fieldnames=["user_id", "item_id", "rating", "timestamp"], delimiter="\t")
 
         for row in rating:
-            Rating.objects.create(user_id=int(row['user_id']), item_id=int(row['item_id']),
-                                  rating=int(row['rating']))
+            temp_user_id = Rater.objects.get(user_id=row['user_id'])
+            temp_movie_id = Movie.objects.get(movie_id=row['movie_id'])
+            Rating.objects.create(user_id=temp_user_id, item_id=temp_movie_id,
+                                  rating=int(row['rating']), timestamp=int(row['timestamp']))
 
-    raise Exception('yay3')
+    # raise Exception('yay3')
 
 
 class Migration(migrations.Migration):
@@ -68,8 +70,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.RunPython(rater_data)  # add with commas here
+        migrations.RunPython(rater_data, movie_data, ratings_data)  # add with commas here
         # migrations.RunPython(movie_data)
-        migrations.RunPython(ratings_data)
+        # migrations.RunPython(ratings_data)
 
     ]
