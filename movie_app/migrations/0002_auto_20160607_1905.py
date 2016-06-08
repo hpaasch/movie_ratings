@@ -56,7 +56,7 @@ def ratings_data(apps, schema_editor):
 
         for row in rating:
             temp_user_id = Rater.objects.get(user_id=row['user_id'])
-            temp_movie_id = Movie.objects.get(movie_id=row['movie_id'])
+            temp_movie_id = Movie.objects.get(movie_id=row['item_id'])
             Rating.objects.create(user_id=temp_user_id, item_id=temp_movie_id,
                                   rating=int(row['rating']), timestamp=int(row['timestamp']))
 
