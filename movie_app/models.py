@@ -50,5 +50,4 @@ class Rating(models.Model):
     rating = models.IntegerField()
     timestamp = models.IntegerField()
 
-    def __str__(self):
-        return self.rating
+
